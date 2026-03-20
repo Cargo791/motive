@@ -6,6 +6,40 @@
   <title>Sticky Nav</title>
   <link rel="stylesheet" href="./style.css">
   <style>
+    .details-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-top: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+
+.details-card h2 {
+  color: #4d148c;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+.detail-box {
+  background: #f9fafb;
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.detail-label {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+}
+
+.detail-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+}
     /* Card */
 .progress-bar-wrapper {
   position: relative;
@@ -737,7 +771,39 @@ if (stageText.includes("deliver")) currentStage = 3;
  <div class="shipment-status">
   Shipment Status: <span>ON HOLD</span>
 </div>
+<div class="details-card">
+  <h2>Receiver & Package Details</h2>
 
+  <div class="detail-box">
+    <div class="detail-label">Receiver Name</div>
+    <div class="detail-value">${data.receiver_name || "N/A"}</div>
+  </div>
+
+  <div class="detail-box">
+    <div class="detail-label">Receiver Email</div>
+    <div class="detail-value">${data.receiver_email || "N/A"}</div>
+  </div>
+
+  <div class="detail-box">
+    <div class="detail-label">Receiver Phone</div>
+    <div class="detail-value">${data.receiver_phone || "N/A"}</div>
+  </div>
+
+  <div class="detail-box">
+    <div class="detail-label">Receiver Address</div>
+    <div class="detail-value">${data.receiver_address || "N/A"}</div>
+  </div>
+
+  <div class="detail-box">
+    <div class="detail-label">Package Description</div>
+    <div class="detail-value">${data.package_description || "N/A"}</div>
+  </div>
+
+  <div class="detail-box">
+    <div class="detail-label">Package Weight</div>
+    <div class="detail-value">${data.package_weight || "N/A"} kg</div>
+  </div>
+</div>
 <div class="info-text">
   <p><strong>Current Location:</strong> ${location}</p>
   <p><strong>Expected Delivery:</strong> ${deliveredDate}</p>
