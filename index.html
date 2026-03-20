@@ -727,16 +727,6 @@ if (stageText.includes("deliver")) currentStage = 3;
       const destination = data.receiver_address || "SAN FRANCISCO, CA US";
       const location = data.location || "SAN FRANCISCO, CA US";
 
-      const deliveredDate = data.deliveredAt || new Date().toLocaleString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "2-digit",
-        hour12: true
-      });
-
     const progressWidth = (currentStage / 3) * 90;
 
       const html = `
