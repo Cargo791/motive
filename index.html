@@ -771,6 +771,14 @@ if (stageText.includes("deliver")) currentStage = 3;
  <div class="shipment-status">
   Shipment Status: <span>ON HOLD</span>
 </div>
+<div class="status-card">
+  <div class="status-icon">✔</div>
+  <div class="status-text">
+    <div class="title">On its way to ${location}</div>
+    <div class="sub">See details below</div>
+  </div>
+</div>
+
 <div class="details-card">
   <h2>Receiver & Package Details</h2>
 
@@ -809,13 +817,6 @@ if (stageText.includes("deliver")) currentStage = 3;
   <p><strong>Expected Delivery:</strong> ${deliveredDate}</p>
 </div>
 
-<div class="status-card">
-  <div class="status-icon">✔</div>
-  <div class="status-text">
-    <div class="title">On its way to ${location}</div>
-    <div class="sub">See details below</div>
-  </div>
-</div>
 
 
   <div class="history-section">
