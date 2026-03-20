@@ -6,6 +6,67 @@
   <title>Sticky Nav</title>
   <link rel="stylesheet" href="./style.css">
   <style>
+    /* Card */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: all 0.7s ease;
+}
+
+/* Progress bar */
+.progress-bar-container {
+  width: 100%;
+  background: #e2e2e2;
+  height: 12px;
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-bar {
+  height: 12px;
+  border-radius: 6px;
+  width: 0%;
+  transition: width 2s ease;
+}
+
+.progress-blue { background: #3b82f6; }
+.progress-green { background: #22c55e; }
+
+.progress-text {
+  text-align: right;
+  font-size: 14px;
+  color: #4b5563;
+  margin-bottom: 16px;
+}
+
+/* Section titles */
+.section-title { font-size: 18px; font-weight: bold; margin-bottom: 8px; color: #111827; }
+.sub-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; color: #374151; }
+
+/* Timeline */
+.timeline { display: flex; align-items: center; justify-content: space-between; font-size: 14px; color: #4b5563; }
+.timeline-step { display: flex; flex-direction: column; align-items: center; text-align: center; width: 100px; }
+.timeline-circle { width: 16px; height: 16px; border-radius: 50%; margin-bottom: 4px; }
+.circle-complete { background: #22c55e; }
+.circle-pending { background: #d1d5db; }
+.timeline-line { flex: 1; height: 2px; background: #d1d5db; margin: 0 4px; }
+
+.timeline-divider { margin: 24px 0; }
+
+/* Alerts */
+.alert-error {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 12px;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 0 auto;
+}
     /* Basic reset */
     * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -457,6 +518,111 @@
     // Update button text
     document.getElementById("languageButton").textContent = lang === 'en' ? 'English' : 'Español';
   }
+  const form = document.getElementById("trackingForm");
+const resultDiv = document.getElementById("trackingResult");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const trackingId = document.getElementById("trackingId").value.trim();
+  resultDiv.innerHTML = `<p class="text-gray">Tracking package...</p>`;
+
+  try {
+    const response = await fetch("https://fedex-kbcuu.onrender.com", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ trackingId }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      let percentage = 50;
+      let statusClass = "progress-blue";
+
+      if (data.progressStage === "picked_up") percentage = 25;
+      else if (data.progressStage === "in_transit") percentage = 60;
+      else if (data.progressStage === "out_for_delivery") percentage = 85;
+      else if (data.progressStage === "delivered") {
+        percentage = 100;
+        statusClass = "progress-green";
+      }
+
+      resultDiv.innerHTML = `
+        <div class="card">
+          
+          <!-- Progress bar -->
+          <div class="progress-bar-container">
+            <div id="progressBar" class="progress-bar ${statusClass}" style="width: 0%;"></div>
+          </div>
+          <p class="progress-text">${percentage}% complete</p>
+
+          <!-- Shipment Info -->
+          <h2 class="section-title">Shipment Details</h2>
+          <p><strong>Status:</strong> ${data.status}</p>
+          <p><strong>Current Location:</strong> ${data.location}</p>
+          <p><strong>ETA:</strong> ${data.eta}</p>
+
+          <hr>
+
+          <h3 class="sub-title">Sender</h3>
+          <p><strong>Name:</strong> ${data.senderName}</p>
+          <p><strong>Email:</strong> ${data.senderEmail}</p>
+          <p><strong>Phone:</strong> ${data.senderPhone}</p>
+          <p><strong>Address:</strong> ${data.senderAddress}</p>
+
+          <hr>
+
+          <h3 class="sub-title">Receiver</h3>
+          <p><strong>Name:</strong> ${data.receiverName}</p>
+          <p><strong>Email:</strong> ${data.receiverEmail}</p>
+          <p><strong>Phone:</strong> ${data.receiverPhone}</p>
+          <p><strong>Address:</strong> ${data.receiverAddress}</p>
+
+          <hr>
+
+          <h3 class="sub-title">Package Info</h3>
+          <p><strong>Description:</strong> ${data.packageDescription}</p>
+          <p><strong>Weight:</strong> ${data.packageWeight} kg</p>
+
+          <hr class="timeline-divider">
+
+          <!-- Timeline -->
+          <div class="timeline">
+            <div class="timeline-step">
+              <div class="timeline-circle ${data.progressStage === 'picked_up' || data.progressStage !== 'picked_up' ? 'circle-complete' : 'circle-pending'}"></div>
+              Picked Up
+            </div>
+            <div class="timeline-line"></div>
+            <div class="timeline-step">
+              <div class="timeline-circle ${['in_transit','out_for_delivery','delivered'].includes(data.progressStage) ? 'circle-complete' : 'circle-pending'}"></div>
+              In Transit
+            </div>
+            <div class="timeline-line"></div>
+            <div class="timeline-step">
+              <div class="timeline-circle ${['out_for_delivery','delivered'].includes(data.progressStage) ? 'circle-complete' : 'circle-pending'}"></div>
+              Out for Delivery
+            </div>
+            <div class="timeline-line"></div>
+            <div class="timeline-step">
+              <div class="timeline-circle ${data.progressStage === 'delivered' ? 'circle-complete' : 'circle-pending'}"></div>
+              Delivered
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Animate progress bar
+      setTimeout(() => {
+        document.getElementById("progressBar").style.width = percentage + "%";
+      }, 300);
+    } else {
+      resultDiv.innerHTML = `<div class="alert-error">${data.message}</div>`;
+    }
+  } catch (err) {
+    resultDiv.innerHTML = `<div class="alert-error">Error connecting to API</div>`;
+  }
+});
 </script>
 
 </body>
