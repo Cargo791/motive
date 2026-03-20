@@ -699,7 +699,14 @@
       }
 
       const data = await response.json();
-
+      const deliveredDate = data.eta 
+  ? new Date(data.eta).toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric"
+    })
+  : "Pending";
       // determine stage
       let stageText = (data.progressStage || data.status || "").toLowerCase();
       let currentStage = 0;
