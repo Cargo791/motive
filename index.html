@@ -698,15 +698,23 @@
         throw new Error(err.message || "Tracking not found");
       }
 
-      const data = await response.json();
-      const deliveredDate = data.eta 
-  ? new Date(data.eta).toLocaleDateString("en-US", {
+    const data = await response.json();
+
+// ✅ SAFE ETA (won’t break your app)
+let deliveredDate = "Pending";
+
+if (data.eta) {
+  const dateObj = new Date(data.eta);
+
+  if (!isNaN(dateObj)) {
+    deliveredDate = dateObj.toLocaleDateString("en-US", {
       weekday: "long",
       month: "long",
       day: "numeric",
       year: "numeric"
-    })
-  : "Pending";
+    });
+  }
+}
       // determine stage
       let stageText = (data.progressStage || data.status || "").toLowerCase();
       let currentStage = 0;
