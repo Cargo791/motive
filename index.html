@@ -9,58 +9,69 @@
     /* Card */
 .progress-bar-wrapper {
   position: relative;
-  margin: 40px 0 60px;
+  margin: 50px 0;
+  padding: 0 10px;
 }
 
+/* LINE */
 .progress-line {
   position: absolute;
-  top: 22px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: #d1d5db;
+  top: 18px; /* aligns perfectly with circle center */
+  left: 5%;
+  width: 90%;
+  height: 4px;
+  background: #e5e7eb;
+  z-index: 1;
 }
 
+/* PROGRESS FILL */
 .progress-fill {
   height: 100%;
   background: linear-gradient(to right, #f59e0b, #6366f1, #6366f1, #22c55e);
+  transition: width 0.5s ease;
 }
 
-/* steps */
+/* STEPS CONTAINER */
 .steps {
   display: flex;
   justify-content: space-between;
   position: relative;
+  z-index: 2;
 }
 
+/* EACH STEP */
 .step {
   text-align: center;
   flex: 1;
+  position: relative;
 }
 
-/* outer circle */
+/* CIRCLE BASE */
 .circle {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: 3px solid #d1d5db;
   background: #fff;
-  margin: 0 auto 8px;
+  margin: 0 auto 10px;
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
-/* inner dot */
+/* INNER DOT */
 .circle::after {
   content: "";
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #d1d5db;
 }
 
-/* colors */
+/* COLORS */
+
+/* Shipped */
 .circle.orange {
   border-color: #f59e0b;
 }
@@ -68,34 +79,33 @@
   background: #f59e0b;
 }
 
-.circle.purple {
+/* Active steps */
+.step.active .circle.purple {
   border-color: #6366f1;
 }
-.circle.purple::after {
+.step.active .circle.purple::after {
   background: #6366f1;
 }
 
-.circle.green {
+/* Delivered */
+.step.active .circle.green {
   border-color: #22c55e;
-}
-.circle.green::after {
-  content: "✔";
-  color: white;
-  font-size: 16px;
-  width: 22px;
-  height: 22px;
   background: #22c55e;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+}
+.step.active .circle.green::after {
+  content: "✔";
+  color: #fff;
+  font-size: 14px;
+  width: auto;
+  height: auto;
+  background: none;
 }
 
-/* labels */
+/* LABELS */
 .step span {
-  font-size: 14px;
-  text-decoration: underline;
+  font-size: 13px;
   color: #111;
+  font-weight: 500;
 }
     /* Basic reset */
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -585,9 +595,10 @@
       let stageText = (data.progressStage || data.status || "").toLowerCase();
       let currentStage = 0;
 
-      if (stageText.includes("pick")) currentStage = 1;
-      else if (stageText.includes("transit")) currentStage = 2;
-      else if (stageText.includes("deliver")) currentStage = 3;
+if (stageText.includes("ship")) currentStage = 0;
+if (stageText.includes("pick")) currentStage = 1;
+if (stageText.includes("transit")) currentStage = 2;
+if (stageText.includes("deliver")) currentStage = 3;
 
       const destination = data.receiver_address || "SAN FRANCISCO, CA US";
       const location = data.location || "SAN FRANCISCO, CA US";
