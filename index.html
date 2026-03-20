@@ -771,6 +771,10 @@ if (stageText.includes("deliver")) currentStage = 3;
  <div class="shipment-status">
   Shipment Status: <span>ON HOLD</span>
 </div>
+<div class="info-text">
+  <p><strong>Current Location:</strong> ${location}</p>
+  <p><strong>Expected Delivery:</strong> ${deliveredDate}</p>
+</div>
 <div class="status-card">
   <div class="status-icon">✔</div>
   <div class="status-text">
@@ -812,10 +816,7 @@ if (stageText.includes("deliver")) currentStage = 3;
     <div class="detail-value">${data.package_weight || "N/A"} kg</div>
   </div>
 </div>
-<div class="info-text">
-  <p><strong>Current Location:</strong> ${location}</p>
-  <p><strong>Expected Delivery:</strong> ${deliveredDate}</p>
-</div>
+
 
 
 
