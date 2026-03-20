@@ -116,6 +116,71 @@
   color: #333;
   text-decoration: none; /* FIX: remove underline */
 }
+    /* SHIPMENT TITLE */
+.shipment-status {
+  font-size: 28px;
+  font-weight: 700;
+  color: #22c55e;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.shipment-status span {
+  font-weight: 800;
+}
+
+/* LOCATION TEXT */
+.info-text {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.info-text p {
+  font-size: 18px;
+  color: #333;
+  margin: 5px 0;
+}
+
+.info-text strong {
+  font-weight: 700;
+}
+
+/* GREEN STATUS CARD */
+.status-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #eef7f1;
+  border: 2px solid #b7e4c7;
+  padding: 20px;
+  border-radius: 14px;
+  margin: 20px 0;
+}
+
+/* BIG GREEN ICON */
+.status-icon {
+  width: 55px;
+  height: 55px;
+  background: #22c55e;
+  color: #111;
+  font-size: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* TEXT */
+.status-text .title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+}
+
+.status-text .sub {
+  font-size: 16px;
+  color: #555;
+}
     /* Basic reset */
     * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -668,19 +733,23 @@ if (stageText.includes("deliver")) currentStage = 3;
     </div>
   </div>
 
-  <div class="delivered-box">
-    <h2>Delivered - Signature not required</h2>
-    <p>${location}</p>
-    <p>Delivered ${deliveredDate}</p>
-  </div>
+ <div class="shipment-status">
+  Shipment Status: <span>IN TRANSIT</span>
+</div>
 
-  <div class="success-card">
-    <div class="success-icon">✔</div>
-    <div>
-      <strong>YOUR PACKAGE WAS DELIVERED</strong><br>
-      See details below
-    </div>
+<div class="info-text">
+  <p><strong>Current Location:</strong> ${location}</p>
+  <p><strong>Expected Delivery:</strong> ${deliveredDate}</p>
+</div>
+
+<div class="status-card">
+  <div class="status-icon">✔</div>
+  <div class="status-text">
+    <div class="title">On its way to ${location}</div>
+    <div class="sub">See details below</div>
   </div>
+</div>
+
 
   <div class="history-section">
     <h3>Travel History</h3>
